@@ -15,7 +15,7 @@ library(ggmap)
 
 
 
-x <- geocode(c("zonienwoudlaan 79, 1640 Sint-genesius-rode"), output="more")
+x <- geocode(c("koningsstraat 100, 1000 Brussel"), output="more")
 
 leaflet() %>% addTiles() %>% setView(x$lon, x$lat, zoom = 18) 
 
