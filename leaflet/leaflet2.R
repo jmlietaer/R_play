@@ -13,7 +13,10 @@
 #   [4]   Get Latitude Longitude - http://www.latlong.net/search.php?keyword=
 # 
 
-# library(ggmap)
+# library(ggmap) # only needed for "Test with ggmap"
+library(leaflet)
+
+### START ### Test with ggmap ###
 
 # pop1 <- geocode(c("paleizenplein, 1000 Brussel"), output="more")
 # pop2 <- geocode(c("wetstraat 16, 1000 Brussel"), output="more")
@@ -26,13 +29,19 @@
 # pop2 <- c(151.215256, -33.856159, "Opera House<br/>Sydney, Australia")
 # pop3 <- c(2.2945, 48.8582, "Eiffel Tower<br/>Paris, France")
 
-library(leaflet)
+# A = matrix(c(pop1, pop2, pop3), nrow=3, ncol=3, byrow = TRUE) 
+
+### END ### Test with ggmap ###
+
+### START ### Test with leaflet ###
 
 file_in = "coordinates.csv"
 pop = read.csv(file_in, header=F, stringsAsFactors=F, skip=0, sep=";")
 A = matrix(c(pop[,1], pop[,2], pop[,3]), nrow=3, ncol=3, byrow = FALSE) 
 
-# A = matrix(c(pop1, pop2, pop3), nrow=3, ncol=3, byrow = TRUE) 
+### END ### Test with leaflet ###
+
+### START ### Common code ###
 
 x <- mean(as.numeric(A[,1]))
 y <- mean(as.numeric(A[,2]))
@@ -48,4 +57,4 @@ m = m %>% addMarkers(data = A, lng = A[,1], lat = A[,2], icon = icons(iconUrl = 
 m = m %>% addPopups(data = A, lng = A[,1], lat = A[,2], popup = A[,3])
 m
 
-#
+### END ### Common code ###
