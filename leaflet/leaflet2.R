@@ -1,7 +1,7 @@
 #
 #   Author:   J.M. Lietaer - https://github.com/jmlietaer
-#   Date:     20150517
-#   Subject:  Test - Libraries leaflet, ggmap
+#   Date:     20150518
+#   Subject:  Test - Libraries leaflet - Data imported from csv-file
 #
 #   Source(s):   
 #   [1]   http://www.computerworld.com/article/2894448/useful-new-r-packages-for-data-visualization-and-analysis.html
@@ -13,8 +13,7 @@
 #   [4]   Get Latitude Longitude - http://www.latlong.net/search.php?keyword=
 # 
 
-library(ggmap)
-library(leaflet)
+# library(ggmap)
 
 # pop1 <- geocode(c("paleizenplein, 1000 Brussel"), output="more")
 # pop2 <- geocode(c("wetstraat 16, 1000 Brussel"), output="more")
@@ -23,11 +22,17 @@ library(leaflet)
 # pop2 <- c(pop2$lon, pop2$lat, pop2$street)
 # pop3 <- c(pop3$lon, pop3$lat, pop3$street)
 
-pop1 <- c(-77.009003, 38.889931, "Capital Building<br/>Washington, DC, USA")
-pop2 <- c(151.215256, -33.856159, "Opera House<br/>Sydney, Australia")
-pop3 <- c(2.2945, 48.8582, "Eiffel Tower<br/>Paris, France")
+# pop1 <- c(-77.009003, 38.889931, "Capital Building<br/>Washington, DC, USA")
+# pop2 <- c(151.215256, -33.856159, "Opera House<br/>Sydney, Australia")
+# pop3 <- c(2.2945, 48.8582, "Eiffel Tower<br/>Paris, France")
 
-A = matrix(c(pop1, pop2, pop3), nrow=3, ncol=3, byrow = TRUE) 
+library(leaflet)
+
+file_in = "coordinates.csv"
+pop = read.csv(file_in, header=F, stringsAsFactors=F, skip=0, sep=";")
+A = matrix(c(pop[,1], pop[,2], pop[,3]), nrow=3, ncol=3, byrow = FALSE) 
+
+# A = matrix(c(pop1, pop2, pop3), nrow=3, ncol=3, byrow = TRUE) 
 
 x <- mean(as.numeric(A[,1]))
 y <- mean(as.numeric(A[,2]))
@@ -39,11 +44,8 @@ y <- mean(as.numeric(A[,2]))
 # if (z_lng > z_lat) {z <- z_lng * 2}
 
 m = leaflet() %>% addTiles() %>% setView(x, y, zoom = 1)
-m = m %>% addMarkers(data = A, lng = A[,1], lat = A[,2], icon = icons(iconUrl = "http://a.fsdn.com/allura/p/freemind/icon", iconWidth = 30, iconHeight = 30), popup = A[,3])
+m = m %>% addMarkers(data = A, lng = A[,1], lat = A[,2], icon = icons(iconUrl = "http://a.fsdn.com/allura/p/freemind/icon", iconWidth = 30, iconHeight = 30), popup = paste(A[,3], "<br/>", A[,1], "<br/>", A[,2], sep=""))
 m = m %>% addPopups(data = A, lng = A[,1], lat = A[,2], popup = A[,3])
 m
-
-# ???
-# leaflet() %>% addTiles() %>% setView(x, y, zoom = z) %>% addMarkers(A[3,1], A[3,2], icon = icons(iconUrl = "http://a.fsdn.com/allura/p/freemind/icon", iconWidth = 30, iconHeight = 30), popup = A[,3]) %>% addPopups(A[3,1], A[3,2], paste("<b>", A[3,3], "</b>", sep=""))
 
 #
